@@ -12,7 +12,7 @@ object Recon {
     val df = sqlContext.read.json("src/resources/people.json")
     df.createTempView("table")
     val df3 = sqlContext.sql("SELECT name FROM table")
-   // df3.show()
+    df3.show()
     val path = "src/resources/people.csv"
     val base_df = sqlContext.read.option("header","true").csv(path)
     base_df.createTempView("table1")
