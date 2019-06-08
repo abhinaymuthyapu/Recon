@@ -1,0 +1,32 @@
+[{
+"config":{
+	"source":{
+		"type":"json",
+		"url":"",
+		"columns":{
+			"include":[],
+			"exclude":[]
+		},
+		"groupBy":[
+				{
+					"column":"A",
+					"func":"SUM"
+				}
+		]
+	},
+	"destination":{
+		"type":"csv",
+		"url":"a",
+		"columns":{
+				"include":[],
+				"exclude":[]
+			},
+			"groupBy":[
+					{
+						"column":"A",
+						"func":"SUM"
+					}
+			]
+		}
+}
+}]
