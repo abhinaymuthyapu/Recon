@@ -10,39 +10,30 @@ import java.io._
 import scala.io.Source
 import com.recon.config._
 
-object NotMatching {
-  def main (args: Array[String]){
-    System.setProperty("hadoop.home.dir", "C:\\winutils")
-    val spark = org.apache.spark.sql.SparkSession.builder
-        .master("local")
-        .appName("notMatching")
-        .getOrCreate;
-   Logger.getLogger("org").setLevel(Level.ERROR)
-   val  dff = spark.read.format("csv").option("header", "true").load("src/main/resources/Test1.csv")
-   val  dfff = spark.read.format("csv").option("header", "true").load("src/main/resources/Test3.csv")
-    dff.createTempView("table1")
-    dfff.createTempView("table2")
-    val A_B = spark.sql("select * from table1 minus select * from table2").createTempView("A_B")
-    val B_A = spark.sql("select * from table2 minus select * from table1").createTempView("B_A")
-    val notMathing = spark.sql("select * from A_B union select * from B_A").coalesce(1)
-    notMathing.show()  
-    notMathing.write.csv("C:\\Users\\718728\\Desktop\\output\\")
+class NotMatching(var sc: SparkContext) {
+  
+  def recon(source:DataSet, destination:DataSet){
     
-    def recon(source:DataSet, destination:DataSet){
+    System.setProperty("hadoop.home.dir", "C:\\winutils")
+    
+    val sqlContext= new org.apache.spark.sql.SQLContext(sc)
      val spark = org.apache.spark.sql.SparkSession.builder
         .master("local")
         .appName("notMatching")
         .getOrCreate;
    Logger.getLogger("org").setLevel(Level.ERROR)
-   val  dff = spark.read.format("csv").option("header", "true").load("src/main/resources/Test1.csv")
-   val  dfff = spark.read.format("csv").option("header", "true").load("src/main/resources/Test3.csv")
-    dff.createTempView("table1")
-    dfff.createTempView("table2")
-    val A_B = spark.sql("select * from table1 minus select * from table2").createTempView("A_B")
-    val B_A = spark.sql("select * from table2 minus select * from table1").createTempView("B_A")
-    val notMathing = spark.sql("select * from A_B union select * from B_A").coalesce(1)
+   val  dff = sqlContext.read.json(source.url)
+   val  dfff = spark.read.format("csv").option("header", "true").load(destination.url)
+    dff.createTempView("table31")
+    dfff.createTempView("table32")
+    var srccol = source.columns.include.mkString(",");
+    var destcol = destination.columns.include.mkString(",");
+    //println(srccol)
+    //println(destcol)
+    val A_B = spark.sql("select "+srccol+ " from table31 minus select "+destcol+" from table32").createTempView("A_B")
+    val B_A = spark.sql("select "+destcol+" from table32 minus select "+srccol+" from table31").createTempView("B_A")
+    val notMathing = spark.sql("select "+srccol+" from A_B union select "+destcol+" from B_A").coalesce(1)
     notMathing.show()  
-    notMathing.write.csv("C:\\Users\\718728\\Desktop\\output\\")
+    notMathing.write.csv("C:\\Users\\718728\\Desktop\\notmatchingoutput\\")
    }
-}
 }

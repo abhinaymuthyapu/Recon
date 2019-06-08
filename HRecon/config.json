@@ -3,9 +3,9 @@
 	"source":{
 		"type":"json",
 		"url":"src/resources/people.json",
-		"key":["name"],
+		"key":["name","email","city"],
 		"columns":{
-			"include":["name","email"],
+			"include":[],
 			"exclude":[]
 		},
 		"groupBy":[
@@ -23,9 +23,9 @@
 	"destination":{
 		"type":"csv",
 		"url":"src/resources/people_old.csv",
-		"key":["name"],
+		"key":["name","first","email"],
 		"columns":{
-				"include":["name","email"],
+				"include":[],
 				"exclude":[]
 			},
 			"groupBy":[
