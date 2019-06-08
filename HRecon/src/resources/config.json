@@ -11,6 +11,11 @@
 				{
 					"column":"A",
 					"func":"SUM"
+				},
+				{
+					
+					"column":"B",
+					"func":"COUNT"
 				}
 		]
 	},

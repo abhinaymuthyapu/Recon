@@ -19,8 +19,13 @@ object Recon {
     base_df.createTempView("table1")
     //val base_df3 = sqlContext.sql("select * from table1 intersect select * from table")
     //base_df3.show()
-    val cr = new ConfigReader()
-   val _type = cr.getConfig(sc,"config.source.url");
+    val cr = new ConfigReader(sc)
+   val _type = cr.getConfig("config.source.url");
    println(_type)
+   val s = cr.getSource()
+   println(s._type)
+   
+   
+   
 }
 }
